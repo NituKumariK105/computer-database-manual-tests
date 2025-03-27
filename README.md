@@ -55,11 +55,3 @@ These are **manual test cases**. To execute them:
 
 ## Author
 QA Engineer – [Nitu Kumari]
-
----
-
-## Submission Guide
-1. **Upload `Computer_Database_TestCases.csv` and `README.md` to GitHub.**
-2. **Verify that the repo structure is correct.**
-3. **Submit your GitHub repository link as per the assignment instructions.**
-4. **Done.**
