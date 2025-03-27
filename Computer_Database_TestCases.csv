@@ -1,0 +1,65 @@
+Test Case ID,Functionality,Test Scenario,Preconditions,Steps,Test Data,Expected Result,Severity,Test Type
+TC001,Homepage,Verify homepage loads correctly,None,1. Navigate to homepage URL,N/A,"Homepage with ""Computers found"" count and search bar loads properly",High,Functional
+TC002,Search,Search with valid computer name,At least one entry,"1. Enter valid name in search bar
+2. Click Filter","""Macintosh""","List of computers with name ""Macintosh"" shown",High,Functional
+TC003,Search,Search with empty input,None,"1. Leave search bar empty
+2. Click Filter",(blank),"All computers listed, no filter applied",Medium,Negative
+TC004,Search,Search with special characters,None,"1. Enter ""!@#$%"" in search
+2. Click Filter","""!@#$%""","No results, ""Nothing to display"" shown",Low,Edge Case
+TC005,Search,Search with 255 char input,None,"1. Enter 255-char string in search
+2. Click Filter","""A...Z"" repeated","No crash, no results or appropriate handling",Low,Edge Case
+TC006,Search,Search with whitespace only,None,"1. Enter spaces in search
+2. Click Filter",""" ""","Treated as empty; all computers shown or ""Nothing to display""",Low,Edge Case
+TC007,Add Computer,Add valid computer data,None,"1. Click Add
+2. Fill valid name, dates, select company
+3. Click Create","""TestComp"", valid dates, Apple Inc.","Computer added, redirected to homepage with success message",High,Functional
+TC008,Add Computer,Add with blank name,None,"1. Click Add
+2. Leave name blank
+3. Click Create",Name: (blank),"Validation error: ""Computer name required""",High,Negative
+TC009,Add Computer,Add with invalid dates,None,"1. Enter ""abcd"" in dates
+2. Click Create","Introduced: ""abcd""",Validation error for invalid date format,Medium,Negative
+TC010,Add Computer,Discontinued date before Introduced,None,"1. Introduced: ""2022-01-01""
+2. Discontinued: ""2021-01-01""
+3. Click Create",As above,Validation or logical error preventing submission,Medium,Edge Case
+TC011,Add Computer,Long name (256 chars),None,"1. Enter 256-char name
+2. Click Create",256-char string,Either truncates or error shown,Low,Edge Case
+TC012,Add Computer,No company selected,None,"1. Fill name, dates
+2. Leave company unselected
+3. Click Create",Company: (not selected),Should accept and create without company,Medium,Functional
+TC013,Add Computer,SQL injection string,None,"1. Name: ""'; DROP TABLE computers;""
+2. Click Create",SQL String,"Treated as plain text, no DB effect",High,Security
+TC014,Add Computer,XSS script input,None,"1. Name: ""<script>alert('XSS')</script>""
+2. Click Create",XSS String,"Input sanitized, no script execution",High,Security
+TC015,Add Computer,Click Cancel on Add page,None,"1. Click Add
+2. Click Cancel",N/A,"Returns to homepage, no data saved",Medium,UI Behavior
+TC016,Add Computer,Press Enter key to submit,None,"1. Fill valid data
+2. Press Enter key",Valid data,"Form submitted, computer added",Medium,UI Behavior
+TC017,Edit Computer,Edit with valid data,Existing computer,"1. Search
+2. Click name
+3. Edit fields
+4. Click Save",Change name/date,"Success message, data updated",High,Functional
+TC018,Edit Computer,Blank name during edit,Existing computer,"1. Edit page
+2. Clear name
+3. Click Save",Name: (blank),"Validation error: ""Computer name required""",High,Negative
+TC019,Edit Computer,Invalid dates during edit,Existing computer,"1. Enter ""xyz"" in dates
+2. Click Save","Dates: ""xyz""",Validation error for date format,Medium,Negative
+TC020,Edit Computer,Click Cancel on Edit page,Existing computer,"1. Edit page
+2. Click Cancel",N/A,"No changes saved, back to homepage",Medium,UI Behavior
+TC021,Delete Computer,Delete existing computer,Existing computer,"1. Search
+2. Click name
+3. Click Delete",N/A,"Computer deleted, success message",High,Functional
+TC022,Pagination,Navigate to next page,>10 entries,1. Click Next on homepage,N/A,"Moves to next page, new results shown",Medium,Functional
+TC023,Pagination,Navigate to previous page,On page >1,1. Click Prev on homepage,N/A,Moves to previous page,Medium,Functional
+TC024,Refresh,Refresh Add Computer page,None,"1. Go to Add
+2. Fill form
+3. Refresh page",N/A,"Data lost, page resets",Low,UI Behavior
+TC025,Refresh,Refresh homepage,None,"1. On homepage, press refresh",N/A,"Page reloads, data remains same",Low,UI Behavior
+TC026,Browser Back,Go back from Add page,None,"1. Go to Add page
+2. Press back",N/A,Returns to homepage,Low,UI Behavior
+TC027,Multi-tabs,Submit same data in multiple tabs,None,"1. Open Add in 2 tabs
+2. Submit in both",Same data,Second submission may fail or duplicate,Medium,Edge Case
+TC028,Button Click,Double-click Create button,None,"1. Fill form
+2. Double-click Create",Valid data,"One submission, no duplicates",Medium,Edge Case
+TC029,Add Computer,Add with future Introduced date,None,"1. Introduced: 2050-01-01
+2. Click Create","""2050-01-01""",Allowed or validation error,Low,Edge Case
+TC030,URL Manipulation,Access /computers/999999999,None,1. Go to /computers/999999999,Fake ID,"""Computer not found"" or safe error message",Medium,Security
